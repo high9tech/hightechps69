@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+const arr = [0];
+
+function jitter() {
+        for (let _ in arr) { // create EnumeratorNextUpdateIndexAndMode DFG node.
+                return 0 in arr; // create HasIndexedProperty DFG node.
+        }
+}
+
+function trigger() {
+        let a = jitter(); // a == true
+        for(let i = 0; i < 0x100000; i++) { 
+                jitter(); // making hot jitter function until it generates FTL bytecode.
+        }
+        let b = jitter(); // b == 0
+
+        if (a != b) {
+            print("a != b");
+        }
+}
+
+trigger();
+
+</script>
+</body>
+</html>
